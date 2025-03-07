@@ -1,9 +1,12 @@
-
 import React, { useState } from 'react';
 import { Search, Calendar, ChevronDown, Filter, MapPin, Coffee, Wifi, Car, Plus } from 'lucide-react';
 import HomestayCard from '@/components/ui/HomestayCard';
+import { format } from 'date-fns';
+import { Calendar as CalendarComponent } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
-// Expanded sample data
 const homestays = [
   {
     id: 1,
@@ -117,7 +120,6 @@ const homestays = [
   }
 ];
 
-// Available locations for filtering
 const locations = [
   "All Locations",
   "Kalimpong",
@@ -125,7 +127,6 @@ const locations = [
   "Kurseong"
 ];
 
-// Available amenities for filtering
 const amenityOptions = [
   { icon: Coffee, label: "Breakfast" },
   { icon: Wifi, label: "Wifi" },
@@ -140,6 +141,8 @@ const StaysScreen: React.FC = () => {
   const [selectedLocation, setSelectedLocation] = useState("All Locations");
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [checkInDate, setCheckInDate] = useState<Date | undefined>(undefined);
+  const [checkOutDate, setCheckOutDate] = useState<Date | undefined>(undefined);
   
   const toggleAmenity = (amenity: string) => {
     if (selectedAmenities.includes(amenity)) {
@@ -188,17 +191,59 @@ const StaysScreen: React.FC = () => {
           <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
         </div>
         
-        {/* Date Picker Toggle */}
-        <button 
-          className="w-full flex items-center justify-between px-4 py-3 bg-white border border-gray-200 rounded-full shadow-sm hover:bg-gray-50 transition-all duration-300 mb-4"
-          onClick={() => setIsDatePickerOpen(!isDatePickerOpen)}
-        >
-          <div className="flex items-center">
-            <Calendar size={18} className="text-offbeat-lime mr-2" />
-            <span className="text-gray-600">Select dates</span>
-          </div>
-          <ChevronDown size={18} className="text-gray-400" />
-        </button>
+        {/* Date Picker */}
+        <div className="flex space-x-2 mb-4">
+          {/* Check-in Date */}
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button 
+                variant="outline"
+                className={cn(
+                  "w-full justify-start text-left font-normal px-4 py-3 bg-white border border-gray-200 rounded-full shadow-sm hover:bg-gray-50",
+                  !checkInDate && "text-gray-500"
+                )}
+              >
+                <Calendar className="mr-2 h-4 w-4 text-offbeat-lime" />
+                {checkInDate ? format(checkInDate, "PPP") : <span>Check-in date</span>}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+              <CalendarComponent
+                mode="single"
+                selected={checkInDate}
+                onSelect={setCheckInDate}
+                initialFocus
+                className="p-3 pointer-events-auto"
+              />
+            </PopoverContent>
+          </Popover>
+
+          {/* Check-out Date */}
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button 
+                variant="outline"
+                className={cn(
+                  "w-full justify-start text-left font-normal px-4 py-3 bg-white border border-gray-200 rounded-full shadow-sm hover:bg-gray-50",
+                  !checkOutDate && "text-gray-500"
+                )}
+              >
+                <Calendar className="mr-2 h-4 w-4 text-offbeat-lime" />
+                {checkOutDate ? format(checkOutDate, "PPP") : <span>Check-out date</span>}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+              <CalendarComponent
+                mode="single"
+                selected={checkOutDate}
+                onSelect={setCheckOutDate}
+                disabled={(date) => checkInDate ? date < checkInDate : false}
+                initialFocus
+                className="p-3 pointer-events-auto"
+              />
+            </PopoverContent>
+          </Popover>
+        </div>
         
         {/* Advanced Filter Button */}
         <button 
@@ -295,6 +340,20 @@ const StaysScreen: React.FC = () => {
           </button>
         </div>
       </header>
+
+      {/* Selected Dates Summary */}
+      {(checkInDate || checkOutDate) && (
+        <div className="bg-gray-50 p-3 rounded-lg mb-4 flex items-center">
+          <Calendar className="text-offbeat-lime mr-2" size={18} />
+          <div>
+            <span className="text-sm font-medium">
+              {checkInDate ? format(checkInDate, "PPP") : "No check-in date"} 
+              {" - "} 
+              {checkOutDate ? format(checkOutDate, "PPP") : "No check-out date"}
+            </span>
+          </div>
+        </div>
+      )}
 
       {/* Homestays Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
