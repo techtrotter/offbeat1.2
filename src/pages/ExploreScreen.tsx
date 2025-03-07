@@ -1,5 +1,6 @@
+
 import React, { useState } from 'react';
-import { Search, Filter, MapPin, Mountain, TrendingUp } from 'lucide-react';
+import { Search, Filter, MapPin, Mountain, TrendingUp, Waves } from 'lucide-react';
 import DestinationCard from '@/components/ui/DestinationCard';
 
 // Sample data
@@ -115,6 +116,53 @@ const allDestinations = [
     rating: 4.2,
     ratingCount: 45,
     category: "trek"
+  },
+  {
+    id: 13,
+    name: "Mirik Lake",
+    location: "Mirik, North Bengal",
+    image: "https://images.unsplash.com/photo-1580100586938-02822d99c4a8?q=80&w=2729&auto=format&fit=crop",
+    rating: 4.7,
+    ratingCount: 156,
+    isPopular: true,
+    category: "lake"
+  },
+  {
+    id: 14,
+    name: "Jorepokhari Lake",
+    location: "Darjeeling, North Bengal",
+    image: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=2670&auto=format&fit=crop",
+    rating: 4.5,
+    ratingCount: 78,
+    category: "lake"
+  },
+  {
+    id: 15,
+    name: "Senchal Lake",
+    location: "Darjeeling, North Bengal",
+    image: "https://images.unsplash.com/photo-1580137189272-c9379f8864fd?q=80&w=2670&auto=format&fit=crop",
+    rating: 4.4,
+    ratingCount: 65,
+    category: "lake"
+  },
+  {
+    id: 16,
+    name: "Deolo Lake",
+    location: "Kalimpong, North Bengal",
+    image: "https://images.unsplash.com/photo-1552083375-1447ce886485?q=80&w=2670&auto=format&fit=crop",
+    rating: 4.6,
+    ratingCount: 92,
+    isPopular: true,
+    category: "lake"
+  },
+  {
+    id: 17,
+    name: "Kalimpong Artificial Lake",
+    location: "Kalimpong, North Bengal",
+    image: "https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?q=80&w=2670&auto=format&fit=crop",
+    rating: 4.2,
+    ratingCount: 43,
+    category: "lake"
   }
 ];
 
@@ -137,8 +185,12 @@ const ExploreScreen: React.FC = () => {
     ? filteredDestinations.filter(dest => dest.category === "trek")
     : [];
 
+  const lakeDestinations = activeCategory === "All"
+    ? filteredDestinations.filter(dest => dest.category === "lake")
+    : [];
+
   const otherDestinations = activeCategory === "All"
-    ? filteredDestinations.filter(dest => dest.category !== "trek")
+    ? filteredDestinations.filter(dest => dest.category !== "trek" && dest.category !== "lake")
     : filteredDestinations;
 
   return (
@@ -177,6 +229,29 @@ const ExploreScreen: React.FC = () => {
           ))}
         </div>
       </header>
+
+      {activeCategory === "All" && lakeDestinations.length > 0 && (
+        <section className="mb-8">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-semibold text-xl flex items-center">
+              <Waves size={18} className="text-offbeat-lime mr-2" />
+              Lake Destinations
+            </h2>
+            <button 
+              onClick={() => setActiveCategory("Lake")}
+              className="text-sm font-medium text-offbeat-lime hover:underline"
+            >
+              See all
+            </button>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {lakeDestinations.slice(0, 4).map((destination) => (
+              <DestinationCard key={destination.id} {...destination} />
+            ))}
+          </div>
+        </section>
+      )}
 
       {activeCategory === "All" && trekDestinations.length > 0 && (
         <section className="mb-8">
