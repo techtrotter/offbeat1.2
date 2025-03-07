@@ -1,9 +1,9 @@
 
 import React, { useState } from 'react';
-import { Search, Calendar, ChevronDown } from 'lucide-react';
+import { Search, Calendar, ChevronDown, Filter, MapPin, Coffee, Wifi, Car, Plus } from 'lucide-react';
 import HomestayCard from '@/components/ui/HomestayCard';
 
-// Sample data
+// Expanded sample data
 const homestays = [
   {
     id: 1,
@@ -14,7 +14,8 @@ const homestays = [
     rating: 4.9,
     ratingCount: 38,
     availableFrom: "Aug 10",
-    availableTo: "Aug 20"
+    availableTo: "Aug 20",
+    amenities: ["Breakfast", "Wifi", "Mountain View", "Parking"]
   },
   {
     id: 2,
@@ -23,7 +24,8 @@ const homestays = [
     image: "https://images.unsplash.com/photo-1615880484746-a134be9a6ecf?q=80&w=2787&auto=format&fit=crop",
     price: 2800,
     rating: 4.7,
-    ratingCount: 45
+    ratingCount: 45,
+    amenities: ["Breakfast", "Trekking", "Garden"]
   },
   {
     id: 3,
@@ -34,7 +36,8 @@ const homestays = [
     rating: 4.8,
     ratingCount: 29,
     availableFrom: "Aug 15",
-    availableTo: "Sep 5"
+    availableTo: "Sep 5",
+    amenities: ["Breakfast", "Wifi", "Tea Garden Tour"]
   },
   {
     id: 4,
@@ -43,7 +46,8 @@ const homestays = [
     image: "https://images.unsplash.com/photo-1622050756792-5b1180bbb458?q=80&w=2787&auto=format&fit=crop",
     price: 1800,
     rating: 4.5,
-    ratingCount: 17
+    ratingCount: 17,
+    amenities: ["River View", "Barbeque", "Fishing"]
   },
   {
     id: 5,
@@ -54,7 +58,8 @@ const homestays = [
     rating: 4.6,
     ratingCount: 23,
     availableFrom: "Aug 1",
-    availableTo: "Aug 30"
+    availableTo: "Aug 30",
+    amenities: ["Forest View", "Bonfire", "Trekking"]
   },
   {
     id: 6,
@@ -63,18 +68,107 @@ const homestays = [
     image: "https://images.unsplash.com/photo-1499696010180-025ef6e1a8f9?q=80&w=2670&auto=format&fit=crop",
     price: 2700,
     rating: 4.9,
-    ratingCount: 31
+    ratingCount: 31,
+    amenities: ["Farm Activities", "Valley View", "Organic Food"]
+  },
+  {
+    id: 7,
+    name: "Heritage Himalayan Lodge",
+    location: "Rishap, Kalimpong",
+    image: "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?q=80&w=2670&auto=format&fit=crop",
+    price: 3100,
+    rating: 4.8,
+    ratingCount: 27,
+    availableFrom: "Aug 20",
+    availableTo: "Sep 10",
+    amenities: ["Breakfast", "Himalayan View", "Cultural Activities"]
+  },
+  {
+    id: 8,
+    name: "Cloud Nine Eco Lodge",
+    location: "Icchey Gaon, Darjeeling",
+    image: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?q=80&w=2680&auto=format&fit=crop",
+    price: 2400,
+    rating: 4.7,
+    ratingCount: 33,
+    amenities: ["Eco-friendly", "Sunrise View", "Organic Meals"]
+  },
+  {
+    id: 9,
+    name: "Orange Orchard Homestay",
+    location: "Bijanbari, Darjeeling",
+    image: "https://images.unsplash.com/photo-1455587734955-081b22074882?q=80&w=2670&auto=format&fit=crop",
+    price: 1950,
+    rating: 4.5,
+    ratingCount: 19,
+    availableFrom: "Sep 1",
+    availableTo: "Sep 30",
+    amenities: ["Orchard Tour", "River Nearby", "Breakfast"]
+  },
+  {
+    id: 10,
+    name: "Misty Mountain Retreat",
+    location: "Pedong, Kalimpong",
+    image: "https://images.unsplash.com/photo-1544984243-ec57ea16fe25?q=80&w=2787&auto=format&fit=crop",
+    price: 3000,
+    rating: 4.9,
+    ratingCount: 41,
+    amenities: ["Mist View", "Fireplace", "Mountain Biking"]
   }
+];
+
+// Available locations for filtering
+const locations = [
+  "All Locations",
+  "Kalimpong",
+  "Darjeeling",
+  "Kurseong"
+];
+
+// Available amenities for filtering
+const amenityOptions = [
+  { icon: Coffee, label: "Breakfast" },
+  { icon: Wifi, label: "Wifi" },
+  { icon: MapPin, label: "Mountain View" },
+  { icon: Car, label: "Parking" }
 ];
 
 const StaysScreen: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+  const [priceRange, setPriceRange] = useState<[number, number]>([1500, 3500]);
+  const [selectedLocation, setSelectedLocation] = useState("All Locations");
+  const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   
-  const filteredHomestays = homestays.filter(homestay => 
-    homestay.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    homestay.location.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const toggleAmenity = (amenity: string) => {
+    if (selectedAmenities.includes(amenity)) {
+      setSelectedAmenities(selectedAmenities.filter(a => a !== amenity));
+    } else {
+      setSelectedAmenities([...selectedAmenities, amenity]);
+    }
+  };
+
+  const filteredHomestays = homestays.filter(homestay => {
+    const matchesSearch = 
+      homestay.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      homestay.location.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    const matchesLocation = 
+      selectedLocation === "All Locations" || 
+      homestay.location.includes(selectedLocation);
+    
+    const matchesPrice = 
+      homestay.price >= priceRange[0] && homestay.price <= priceRange[1];
+    
+    const matchesAmenities = 
+      selectedAmenities.length === 0 || 
+      selectedAmenities.every(amenity => 
+        homestay.amenities?.includes(amenity)
+      );
+    
+    return matchesSearch && matchesLocation && matchesPrice && matchesAmenities;
+  });
 
   return (
     <div className="px-4 py-6 max-w-7xl mx-auto">
@@ -106,7 +200,83 @@ const StaysScreen: React.FC = () => {
           <ChevronDown size={18} className="text-gray-400" />
         </button>
         
-        {/* Filter Options */}
+        {/* Advanced Filter Button */}
+        <button 
+          className="w-full flex items-center justify-between px-4 py-3 bg-white border border-gray-200 rounded-full shadow-sm hover:bg-gray-50 transition-all duration-300 mb-4"
+          onClick={() => setIsFilterOpen(!isFilterOpen)}
+        >
+          <div className="flex items-center">
+            <Filter size={18} className="text-offbeat-lime mr-2" />
+            <span className="text-gray-600">More filters</span>
+          </div>
+          <ChevronDown size={18} className={`text-gray-400 transition-transform ${isFilterOpen ? 'rotate-180' : ''}`} />
+        </button>
+        
+        {/* Advanced Filters Panel */}
+        {isFilterOpen && (
+          <div className="bg-white rounded-xl p-4 mb-4 shadow-md">
+            {/* Location Filter */}
+            <div className="mb-4">
+              <h3 className="font-medium text-sm mb-2">Location</h3>
+              <div className="flex flex-wrap gap-2">
+                {locations.map(location => (
+                  <button
+                    key={location}
+                    onClick={() => setSelectedLocation(location)}
+                    className={`px-3 py-1 rounded-full text-sm ${
+                      selectedLocation === location
+                        ? 'bg-offbeat-lime text-offbeat-charcoal'
+                        : 'bg-gray-100 text-gray-700'
+                    }`}
+                  >
+                    {location}
+                  </button>
+                ))}
+              </div>
+            </div>
+            
+            {/* Price Range */}
+            <div className="mb-4">
+              <h3 className="font-medium text-sm mb-2">Price Range (₹)</h3>
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm text-gray-600">₹{priceRange[0]}</span>
+                <span className="text-sm text-gray-600">₹{priceRange[1]}</span>
+              </div>
+              <input
+                type="range"
+                min="1500"
+                max="3500"
+                step="100"
+                value={priceRange[1]}
+                onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value)])}
+                className="w-full accent-offbeat-lime"
+              />
+            </div>
+            
+            {/* Amenities */}
+            <div>
+              <h3 className="font-medium text-sm mb-2">Amenities</h3>
+              <div className="flex flex-wrap gap-2">
+                {amenityOptions.map(({ icon: Icon, label }) => (
+                  <button
+                    key={label}
+                    onClick={() => toggleAmenity(label)}
+                    className={`flex items-center gap-1 px-3 py-1 rounded-full text-sm ${
+                      selectedAmenities.includes(label)
+                        ? 'bg-offbeat-lime text-offbeat-charcoal'
+                        : 'bg-gray-100 text-gray-700'
+                    }`}
+                  >
+                    <Icon size={14} />
+                    {label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+        
+        {/* Quick Filter Options */}
         <div className="flex overflow-x-auto py-2 hide-scrollbar gap-2">
           <button className="px-4 py-2 bg-offbeat-lime text-offbeat-charcoal rounded-full whitespace-nowrap text-sm font-medium">
             Price: Low to High
@@ -120,6 +290,9 @@ const StaysScreen: React.FC = () => {
           <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded-full whitespace-nowrap text-sm font-medium">
             Breakfast Included
           </button>
+          <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded-full whitespace-nowrap text-sm font-medium">
+            Mountain View
+          </button>
         </div>
       </header>
 
@@ -131,7 +304,7 @@ const StaysScreen: React.FC = () => {
           ))
         ) : (
           <div className="col-span-2 py-10 text-center">
-            <p className="text-gray-500">No homestays found. Try a different search term.</p>
+            <p className="text-gray-500">No homestays found. Try adjusting your filters.</p>
           </div>
         )}
       </div>

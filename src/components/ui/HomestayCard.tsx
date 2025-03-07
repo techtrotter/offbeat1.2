@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { MapPin, Star, Calendar } from 'lucide-react';
+import { MapPin, Star, Calendar, Coffee, Wifi, Check } from 'lucide-react';
 
 interface HomestayCardProps {
   id: number;
@@ -13,6 +13,7 @@ interface HomestayCardProps {
   ratingCount: number;
   availableFrom?: string;
   availableTo?: string;
+  amenities?: string[];
 }
 
 const HomestayCard: React.FC<HomestayCardProps> = ({
@@ -25,8 +26,20 @@ const HomestayCard: React.FC<HomestayCardProps> = ({
   ratingCount,
   availableFrom,
   availableTo,
+  amenities = [],
 }) => {
   const navigate = useNavigate();
+
+  const getAmenityIcon = (amenity: string) => {
+    switch (amenity.toLowerCase()) {
+      case 'breakfast':
+        return <Coffee size={12} className="text-offbeat-lime" />;
+      case 'wifi':
+        return <Wifi size={12} className="text-offbeat-lime" />;
+      default:
+        return <Check size={12} className="text-offbeat-lime" />;
+    }
+  };
 
   return (
     <div 
@@ -61,6 +74,22 @@ const HomestayCard: React.FC<HomestayCardProps> = ({
           <div className="flex items-center mt-2 text-sm text-gray-600">
             <Calendar size={14} className="text-offbeat-lime mr-1" />
             <span>Available: {availableFrom} - {availableTo}</span>
+          </div>
+        )}
+        
+        {amenities.length > 0 && (
+          <div className="flex flex-wrap gap-1 mt-2">
+            {amenities.slice(0, 3).map((amenity, index) => (
+              <div key={index} className="flex items-center bg-gray-100 rounded-full px-2 py-0.5 text-xs">
+                {getAmenityIcon(amenity)}
+                <span className="ml-1">{amenity}</span>
+              </div>
+            ))}
+            {amenities.length > 3 && (
+              <div className="flex items-center bg-gray-100 rounded-full px-2 py-0.5 text-xs">
+                <span>+{amenities.length - 3} more</span>
+              </div>
+            )}
           </div>
         )}
         
