@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { Search, Filter } from 'lucide-react';
+import { Search, Filter, MapPin, Mountain, TrendingUp } from 'lucide-react';
 import DestinationCard from '@/components/ui/DestinationCard';
 
 // Sample data
@@ -60,6 +59,62 @@ const allDestinations = [
     rating: 4.4,
     ratingCount: 29,
     category: "viewpoint"
+  },
+  {
+    id: 7,
+    name: "Sandakphu Trek",
+    location: "Darjeeling, North Bengal",
+    image: "https://images.unsplash.com/photo-1464278533981-50e57c2b7d1d?q=80&w=2274&auto=format&fit=crop",
+    rating: 4.9,
+    ratingCount: 187,
+    isPopular: true,
+    category: "trek"
+  },
+  {
+    id: 8,
+    name: "Phalut Trek",
+    location: "Darjeeling, North Bengal",
+    image: "https://images.unsplash.com/photo-1455156218388-5e61b526818b?q=80&w=2670&auto=format&fit=crop",
+    rating: 4.7,
+    ratingCount: 112,
+    category: "trek"
+  },
+  {
+    id: 9,
+    name: "Singalila Ridge Trail",
+    location: "Darjeeling, North Bengal",
+    image: "https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?q=80&w=2676&auto=format&fit=crop",
+    rating: 4.8,
+    ratingCount: 152,
+    isPopular: true,
+    category: "trek"
+  },
+  {
+    id: 10,
+    name: "Gorumara Trek",
+    location: "Jalpaiguri, North Bengal",
+    image: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=2674&auto=format&fit=crop",
+    rating: 4.3,
+    ratingCount: 67,
+    category: "trek"
+  },
+  {
+    id: 11,
+    name: "Neora Valley Trek",
+    location: "Kalimpong, North Bengal",
+    image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2560&auto=format&fit=crop",
+    rating: 4.6,
+    ratingCount: 89,
+    category: "trek"
+  },
+  {
+    id: 12,
+    name: "Mulkharka Trail",
+    location: "Darjeeling, North Bengal",
+    image: "https://images.unsplash.com/photo-1586348943529-beaae6c28db9?q=80&w=2630&auto=format&fit=crop",
+    rating: 4.2,
+    ratingCount: 45,
+    category: "trek"
   }
 ];
 
@@ -78,13 +133,19 @@ const ExploreScreen: React.FC = () => {
     return matchesSearch && matchesCategory;
   });
 
+  const trekDestinations = activeCategory === "All" 
+    ? filteredDestinations.filter(dest => dest.category === "trek")
+    : [];
+
+  const otherDestinations = activeCategory === "All"
+    ? filteredDestinations.filter(dest => dest.category !== "trek")
+    : filteredDestinations;
+
   return (
     <div className="px-4 py-6 max-w-7xl mx-auto">
-      {/* Header */}
       <header className="mb-6">
         <h1 className="heading-md text-offbeat-charcoal mb-4">Explore Offbeat Places</h1>
         
-        {/* Search Bar */}
         <div className="relative mb-4">
           <input
             type="text"
@@ -100,7 +161,6 @@ const ExploreScreen: React.FC = () => {
           </button>
         </div>
         
-        {/* Categories */}
         <div className="flex overflow-x-auto py-2 hide-scrollbar gap-2 mb-2">
           {categories.map((category) => (
             <button
@@ -118,10 +178,32 @@ const ExploreScreen: React.FC = () => {
         </div>
       </header>
 
-      {/* Destinations Grid */}
+      {activeCategory === "All" && trekDestinations.length > 0 && (
+        <section className="mb-8">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-semibold text-xl flex items-center">
+              <Mountain size={18} className="text-offbeat-lime mr-2" />
+              Trek Destinations
+            </h2>
+            <button 
+              onClick={() => setActiveCategory("Trek")}
+              className="text-sm font-medium text-offbeat-lime hover:underline"
+            >
+              See all
+            </button>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {trekDestinations.slice(0, 4).map((destination) => (
+              <DestinationCard key={destination.id} {...destination} />
+            ))}
+          </div>
+        </section>
+      )}
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {filteredDestinations.length > 0 ? (
-          filteredDestinations.map((destination) => (
+        {otherDestinations.length > 0 ? (
+          otherDestinations.map((destination) => (
             <DestinationCard key={destination.id} {...destination} />
           ))
         ) : (
