@@ -1,69 +1,78 @@
-# Welcome to your  project
+# OffBeats – The Offbeat Travel Companion App
 
-## Project info
+**OffBeats** is a modern Android-based travel application designed for explorers who crave offbeat adventures. Whether you're planning a solo trek through the Himalayas or hoping to find a travel partner for your next spontaneous trip, OffBeats is your go-to solution. Built for passionate travelers, trekkers, and solo wanderers, the app blends travel planning with community features.
 
-**URL**: https://lovable.dev/projects/5a99c2dc-bf3a-43a4-8f00-a7ee2c931657
+Future Enhancement: Integration of LLMs (Large Language Models) to auto-generate personalized itineraries based on travel goals, mood, season, and terrain.
 
-## How can I edit this code?
+---
 
-There are several ways of editing your application.
+## Demo
 
-**Use Lovable**
+Watch the working demo of OffBeats in action:
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/5a99c2dc-bf3a-43a4-8f00-a7ee2c931657) and start prompting.
+<video src="./Screen%20Recording%202025-03-09%20104945_compressed.mp4" controls width="100%"></video>
 
-Changes made via Lovable will be committed automatically to this repo.
+---
 
-**Use your preferred IDE**
+## Key Features
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- Explore Offbeat Destinations  
+  Discover hidden trails, less-traveled paths, and culturally rich rural areas.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- Trekking-Friendly Guides  
+  Access detailed trail information, weather updates, and survival essentials.
 
-Follow these steps:
+- Solo Traveler Matchmaking  
+  Connect with fellow solo travelers for safe, meaningful journeys.
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+- LLM-Powered Itinerary (Upcoming)  
+  Plan your trip using AI-powered itinerary builders based on your preferences and location.
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+- Smart Packing & Checklist Tools  
+  Auto-generate your trek packing list depending on terrain and duration.
 
-# Step 3: Install the necessary dependencies.
-npm i
+- Location-Aware Assistance  
+  Get real-time info on nearby medical help, homestays, or trekking groups.
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+---
 
-**Edit a file directly in GitHub**
+## Tech Stack
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+- Platform: Android (Kotlin or Java – specify here)
+- UI: Jetpack Compose / XML
+- Navigation: Jetpack Navigation Component
+- Local DB: Room / SQLite
+- Backend: Firebase / Node.js (if connected)
+- APIs: Google Maps SDK, Weather API
+- Version Control: Git + GitHub
 
-**Use GitHub Codespaces**
+---
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Getting Started (For Developers)
 
-## What technologies are used for this project?
+### Prerequisites
 
-This project is built with .
+- Android Studio (Flamingo or above)
+- Android SDK 33+
+- Emulator or Physical Device
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+### Installation Steps
 
-## How can I deploy this project?
+```bash
+# Clone the repository
+git clone https://github.com/<your-username>/OffBeats.git
 
-Simply open [Lovable](https://lovable.dev/projects/5a99c2dc-bf3a-43a4-8f00-a7ee2c931657) and click on Share -> Publish.
+# Open the project in Android Studio
+# Sync Gradle and Run on Emulator or Device
 
-## I want to use a custom domain - is that possible?
 
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+Future Roadmap
+Add LLM (OpenAI/LLama2) for auto-itinerary generation
+
+Voice assistant for planning on-the-go
+
+Travel safety module with SOS alert
+
+Community-driven image uploads and blog integration
+
+Multilingual support for regional accessibility
