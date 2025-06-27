@@ -1,5 +1,5 @@
 # OffBeats – The Offbeat Travel Companion App
-<p align="center"> <img src="./assets/Screenshot 2025-06-27 142200.png" width="90%" style="border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);" alt="OffBeats App UI"> </p>
+<p align="center"> <img src="./Screenshot 2025-06-27 142200.png" width="90%" style="border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);" alt="OffBeats App UI"> </p>
 Explore the Untraveled Paths of the Himalayas
 A travel companion app for discovering hidden gems in North Bengal and the Eastern Himalayas.
 **OffBeats** is a modular Android-based travel companion application tailored for solo travelers and offbeat tourism enthusiasts. It offers a seamless experience to discover hidden travel spots, book unique homestays, and connect with fellow explorers. The application emphasizes promoting regional tourism—especially in underexplored areas like North Bengal and the Eastern Himalayas.
