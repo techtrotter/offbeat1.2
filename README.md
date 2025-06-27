@@ -6,11 +6,7 @@ Future Enhancement: Integration of LLMs (Large Language Models) to auto-generate
 
 ---
 
-## Demo
 
-Watch the working demo of OffBeats in action:
-
-<video src="./Screen%20Recording%202025-03-09%20104945_compressed.mp4" controls width="100%"></video>
 
 ---
 
